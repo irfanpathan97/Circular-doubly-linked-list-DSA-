@@ -1,0 +1,126 @@
+1]Problem Definition: Circular Doubly Linked List in JavaObjective:
+Implement a circular doubly linked list data structure in Java, providing the following operations:
+
+Insert a new node at the end (rightmost) of the list.
+Remove the leftmost node from the list.
+Remove the rightmost node from the list.
+Traverse the list from the head to the tail and print the value of each node.
+Traverse the list from the tail to the head and print the value of each node.
+
+
+class Node {
+    int data;
+    Node next;
+    Node prev;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+        this.prev = null;
+    }
+}
+class CircularDoublyLinkedList {
+    private Node head;
+    private Node tail;
+
+    public CircularDoublyLinkedList() {
+        head = null;
+        tail = null;
+    }
+
+   
+    public void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+            head.next = head;
+            head.prev = head;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            newNode.next = head;
+            head.prev = newNode;
+            tail = newNode;
+        }
+    }
+
+    
+    public void removeFromStart() {
+        if (head == null) return;
+        if (head == tail) {
+            head = null;
+            tail = null;
+        } else {
+            head = head.next;
+            tail.next = head; 
+            head.prev = tail; 
+        }
+    }
+
+    
+    public void removeFromEnd() {
+        if (tail == null) return; 
+
+        if (head == tail) {
+            head = null;
+            tail = null;
+        } else {
+            tail = tail.prev;
+            tail.next = head; 
+            head.prev = tail; 
+        }
+    }
+
+    
+    public void traverseForward() {
+        if (head == null) return; 
+
+        Node current = head;
+        do {
+            System.out.print(current.data + " ");
+            current = current.next;
+        } while (current != head);
+        System.out.println();
+    }
+
+    
+    public void traverseBackward() {
+        if (tail == null) return; 
+
+        Node current = tail;
+        do {
+            System.out.print(current.data + " ");
+            current = current.prev;
+        } while (current != tail);
+        System.out.println();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        CircularDoublyLinkedList list = new CircularDoublyLinkedList();
+
+       
+        list.insertAtEnd(10);
+        list.insertAtEnd(20);
+        list.insertAtEnd(30);
+
+        
+        System.out.println("Traverse Forward:");
+        list.traverseForward();  
+
+        
+        System.out.println("Traverse Backward:");
+        list.traverseBackward();  
+
+        
+        list.removeFromStart();
+        System.out.println("After removing leftmost node:");
+        list.traverseForward(); 
+
+       
+        list.removeFromEnd();
+        System.out.println("After removing rightmost node:");
+        list.traverseForward(); 
+    }
+}
